@@ -10,7 +10,7 @@ jobs:
   build-push:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -76,6 +76,23 @@ jobs:
         # unknown/unknown architecture in ghcr package listing.
         provenance: false
         sbom: false
+
+    - name: Log run info to a branch
+      # This provides a branch where it's easy to see if a build
+      # succeeded for a commit hash.  A happy side-effect might also
+      # be, that thanks to this branch, our automatic scheduled builds
+      # will hopefully not be deactivated after 60 days...  We need
+      # that anyway, because we want to apply security updates from
+      # nilcons/debian automtaically once a month.
+      run: |
+        git fetch --no-write-fetch-head origin actions-log
+        git checkout actions-log
+        touch ${{ github.sha }}
+        git add ${{ github.sha }}
+        git config --global user.name Nilcons-Github-Action
+        git config --global user.email nilcons@users.noreply.github.com
+        git commit -m 'Pipeline finished'
+        git push
 
 # We have this env section at the end, because the weird quoting that
 # is needed inside of it is breaking emacs highlight behind it...
