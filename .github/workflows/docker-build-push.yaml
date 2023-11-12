@@ -87,8 +87,8 @@ jobs:
       run: |
         git fetch --no-write-fetch-head origin actions-log
         git checkout actions-log
-        touch ${{ github.sha }}
-        git add ${{ github.sha }}
+        touch ${{ env.ncd_shadatetag }}
+        git add ${{ env.ncd_shadatetag }}
         git config --global user.name Nilcons-Github-Action
         git config --global user.email nilcons@users.noreply.github.com
         git commit -m 'Pipeline finished'
