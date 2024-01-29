@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-if tty >/dev/null 2>&1 ; then
+if tty >/dev/null 2>&1; then
     exec bash
 else
     echo >&2 "Welcome to Nilcons Debian, no TTY has been found, sleeping..."
