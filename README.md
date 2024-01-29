@@ -40,6 +40,16 @@ Also, child processes are correctly reaped.
 
 The default command is our `bash-if-tty`, which gives a shell when running with a TTY, or sleeps infinitely without terminal.
 
+# Using the static busybox in your debugging session
+
+We have the `busybox-static` package installed from Debian, so this image can be used to fix any scratch/distroless container:
+
+```
+COPY --from=nilcons/debian /bin/busybox /secret-path/sh
+```
+
+Appending this to any `Dockerfile`, you instantly gain `docker exec -it misguided-cloudyouth /secret-path/sh` functionality.
+
 # Testing the ARM and ARM64 builds on your AMD64 workstation
 
 Idea stolen from: https://www.stereolabs.com/docs/docker/building-arm-container-on-x86/
