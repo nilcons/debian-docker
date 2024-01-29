@@ -8,8 +8,8 @@ RUN apt-get update -q \
            busybox-static tini \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/*
-ENTRYPOINT [ "tini", "--" ]
-COPY bash-if-tty /usr/bin
+COPY bash-if-tty tini-if-1 /usr/bin/
+ENTRYPOINT [ "/usr/bin/tini-if-1" ]
 CMD [ "/usr/bin/bash-if-tty" ]
 
 # Unit test: docker run -it --rm ttl.sh/nilcons/debian /bin/sh -c 'for i in `seq 1 10` ; do echo $i ; done ; exec sleep 100'
