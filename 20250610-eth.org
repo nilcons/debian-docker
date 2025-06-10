@@ -1,0 +1,89 @@
+#+BEGIN_COMMENT
+(progn
+  (load (concat default-directory "org-present.el"))
+  (add-hook 'org-present-mode-hook (lambda () (org-present-big) (org-display-inline-images) (org-present-hide-cursor) (org-present-read-only)))
+  (add-hook 'org-present-mode-quit-hook (lambda () (org-present-small) (org-remove-inline-images) (org-present-show-cursor) (org-present-read-write)))
+  (setq browse-url-browser-function #'browse-url-chrome)
+  )
+* nilcons/debian Docker Image
+
+Agenda:
+  - why?
+  - what?
+  - how?
+  - details!
+
+* Why
+
+When teaching Kubernetes/Docker,
+the minimalistic approach of containers is annoying.
+
+DEMO:
+  - docker run --rm debian
+  - docker run --rm -it debian => ps, ifconfig, route, telnet
+
+* What
+
+Have a base image, that contains all the cmdline tools.
+
+Balancing act: still want it to be fast to download.
+
+Maintenance: automate as much as possible
+
+Make sure it's always on: publish to GHCR and Docker Hub!
+
+* How
+
+We only need a well written [[https://github.com/nilcons/debian-docker/blob/master/Dockerfile][Dockerfile]]?
+
+Conceptually yes.
+
+But the details are important though!
+
+* Details: tiny-if-1
+
+DEMO: docker run -it --rm debian sleep 100
+  (then try to Ctrl-C)
+
+Ours: docker run -it --rm nilcons/debian sleep 100
+
+Not so well known: docker run --init
+
+* Details: bash-if-tty
+
+DEMO: docker run --rm debian
+DEMO: docker run --rm nilcons/debian
+
+* Details: package list
+
+Mostly stolen from my personal
+machine installation automation.
+
+Hopefully good enough for most courses/use-cases
+without being too bloaty.
+
+* Details: supported architectures
+
+- amd64
+- armv7 (32-bit)
+- arm (64-bit)
+
+Some people are already using ARM in the cloud.
+Better power usage, less costs.
+Most images ignore it.
+
+* Details: automatic security rebuilds
+
+See the [[https://github.com/nilcons/debian-docker/blob/master/.github/workflows/docker-build-push.yaml][github automation]].
+
+Rebuilt every month and automatically published to ghcr too:
+
+docker run -it --rm ghcr.io/nilcons/debian
+
+* Details: Github Actions expiry
+
+Github policy: no commits in a repo
+for 2 months and it's paused.
+
+Workaround: every build publishes
+a result commit into a branch.
