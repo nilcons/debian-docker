@@ -36,6 +36,7 @@ RUN apt-get update -q \
            bzip2 xz-utils lzip lzma lzop gzip ncompress zstd \
            rsync python3 \
            busybox-static tini \
+           docker-cli docker-buildx \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/*
 COPY bash-if-tty tini-if-1 /usr/bin/
