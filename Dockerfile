@@ -28,9 +28,11 @@ RUN mkdir /tmp/bb && cd /tmp/bb \
         && make CC=musl-gcc LD=musl-gcc -C build-musl -f $PWD/Makefile KBUILD_SRC=$PWD
 
 FROM debian:trixie
+# The final deb-src hacking is there, so nilcons/debian can be used for
+# `apt-get update && apt-get source XXX` code reading tasks.
 RUN apt-get update -q \
         && apt-get install -y -q --no-install-recommends \
-           lsof procps net-tools dnsutils moreutils unzip zip strace iotop ca-certificates psmisc file apt-file \
+           lsof procps net-tools dnsutils moreutils unzip zip strace iotop ca-certificates psmisc file apt-file dpkg-dev \
            netcat-openbsd telnet curl socat tcpdump wget bwm-ng ssh-client openssl links bind9-dnsutils iproute2 mtr-tiny iputils-ping iptables nftables fping \
            less vim git ed tmux mc calc bc ncdu dstat smem pv jq man-db sqlite3 fdisk dosfstools \
            bzip2 xz-utils lzip lzma lzop gzip ncompress zstd \
@@ -38,7 +40,8 @@ RUN apt-get update -q \
            busybox-static tini \
            docker-cli docker-buildx \
         && apt-get clean \
-        && rm -rf /var/lib/apt/lists/*
+        && rm -rf /var/lib/apt/lists/* \
+        && sed 's/ deb/ deb-src/' /etc/apt/sources.list.d/debian.sources >/etc/apt/sources.list.d/debian-src.sources
 COPY bash-if-tty tini-if-1 /usr/bin/
 RUN dpkg-divert --rename --add /usr/bin/busybox
 COPY --from=busybox-build  /tmp/bb/busybox/build-musl/busybox /usr/bin/busybox
