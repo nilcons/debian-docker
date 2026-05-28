@@ -28,6 +28,8 @@ RUN mkdir /tmp/bb && cd /tmp/bb \
         && make CC=musl-gcc LD=musl-gcc -C build-musl -f $PWD/Makefile KBUILD_SRC=$PWD
 
 FROM debian:trixie
+# Fix for ncurses apps (e.g. ncdu) on utf-8 terminals, hopefully all terminals are utf-8 nowadays...
+ENV LANG=C.UTF-8
 # The final deb-src hacking is there, so nilcons/debian can be used for
 # `apt-get update && apt-get source XXX` code reading tasks.
 RUN apt-get update -q \
