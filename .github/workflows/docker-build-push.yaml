@@ -66,7 +66,8 @@ jobs:
           org.opencontainers.image.revision=${{ github.sha }}
           org.opencontainers.image.created=${{ env.ncd_created }}
         # Annotations in the registry: shows up on web UIs and in regctl
-        outputs: type=image,name=target,${{ env.ncd_annotation }}
+        # Add the zstd, force-compression, and oci-mediatypes parameters here:
+        outputs: type=image,name=target,${{ env.ncd_annotation }},compression=zstd,force-compression=true,oci-mediatypes=true
         tags: |
           ghcr.io/nilcons/debian:sha-${{ env.ncd_shadatetag }}
           ghcr.io/nilcons/debian:latest
