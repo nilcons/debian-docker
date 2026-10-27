@@ -35,10 +35,10 @@ ENV LANG=C.UTF-8
 RUN apt-get update -q \
         && apt-get install -y -q --no-install-recommends \
            lsof procps net-tools dnsutils moreutils unzip zip strace iotop ca-certificates psmisc file apt-file dpkg-dev \
-           netcat-openbsd telnet curl socat tcpdump wget bwm-ng ssh-client openssl links bind9-dnsutils iproute2 mtr-tiny iputils-ping iptables nftables fping \
+           netcat-openbsd telnet curl socat tcpdump wget bwm-ng ssh-client openssl links bind9-dnsutils bind9-utils iproute2 mtr-tiny iputils-ping iptables nftables fping \
            less vim git ed tmux mc calc bc ncdu dstat smem pv jq man-db sqlite3 fdisk dosfstools ncurses-term xxd \
            bzip2 xz-utils lzip lzma lzop gzip ncompress zstd \
-           rsync python3 progress \
+           rsync python3 python3-venv progress \
            busybox-static tini \
            docker-cli docker-buildx \
         && apt-get clean \
